@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
+        
+        // If start or finish is blocked, no path exists
+        if (obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1) {
+            return 0;
+        }
+        
+        // dp[j] = number of ways to reach current row's column j
+        vector<int> dp(n, 0);
+        dp[0] = 1; // Start cell
+        
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[j] = 0; // Obstacle: no ways to reach here
+                } else if (j > 0) {
+                    dp[j] += dp[j - 1]; // From top (dp[j]) + from left (dp[j-1])
+                }
+                // When j == 0 and no obstacle, dp[0] carries down from previous row
+            }
+        }
+        
+        return dp[n - 1];
+    }
+};
