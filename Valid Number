@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool isNumber(string s) {
+        bool seenDigit = false;
+        bool seenDot = false;
+        bool seenExp = false;
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s[i];
+            
+            if (c >= '0' && c <= '9') {
+                seenDigit = true;
+            } else if (c == '+' || c == '-') {
+                // Sign must be at start or immediately after e/E
+                if (i > 0 && s[i - 1] != 'e' && s[i - 1] != 'E') {
+                    return false;
+                }
+            } else if (c == '.') {
+                // Dot cannot appear twice or after exponent
+                if (seenDot || seenExp) {
+                    return false;
+                }
+                seenDot = true;
+            } else if (c == 'e' || c == 'E') {
+                // Exponent cannot appear twice or without a preceding digit
+                if (seenExp || !seenDigit) {
+                    return false;
+                }
+                seenExp = true;
+                seenDigit = false; // Reset: need at least one digit after e/E
+            } else {
+                // Any other character is invalid
+                return false;
+            }
+        }
+        
+        // Must end with at least one digit (either in mantissa or exponent)
+        return seenDigit;
+    }
+};
