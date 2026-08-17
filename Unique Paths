@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        // The robot needs exactly (m-1) down moves and (n-1) right moves.
+        // Total moves = (m + n - 2).
+        // The answer is C(m+n-2, m-1) — choose which moves are "down".
+        
+        long long result = 1;
+        int N = m + n - 2;
+        int k = min(m, n) - 1; // Use the smaller one for fewer iterations
+        
+        for (int i = 1; i <= k; ++i) {
+            result = result * (N - i + 1) / i;
+        }
+        
+        return static_cast<int>(result);
+    }
+};
