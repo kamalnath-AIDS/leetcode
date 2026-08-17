@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        // Precompute factorials: fact[i] = i!
+        vector<int> fact(n + 1, 1);
+        for (int i = 1; i <= n; ++i) {
+            fact[i] = fact[i - 1] * i;
+        }
+        
+        // Use 0-based index for easier math
+        k--;
+        
+        // Available numbers: 1, 2, ..., n
+        vector<int> nums;
+        for (int i = 1; i <= n; ++i) {
+            nums.push_back(i);
+        }
+        
+        string result;
+        
+        // Build the permutation digit by digit
+        for (int i = n; i >= 1; --i) {
+            // Determine which number to pick from remaining nums
+            int idx = k / fact[i - 1];
+            k = k % fact[i - 1];
+            
+            result += to_string(nums[idx]);
+            nums.erase(nums.begin() + idx);
+        }
+        
+        return result;
+    }
+};
